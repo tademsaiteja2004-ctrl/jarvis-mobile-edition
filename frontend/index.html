@@ -1,31 +1,237 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>J.A.R.V.I.S</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>J.A.R.V.I.S Brain Test</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #0ff;
+            font-family: monospace;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        #status {
+            color: #f00;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            background: #001a1a;
+            color: #0ff;
+            border: 1px solid #0ff;
+            border-radius: 8px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 16px;
+            outline: none;
+        }
+
+        textarea:focus {
+            box-shadow: 0 0 10px #0ff;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #0ff;
+            color: #000;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #fff;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #reply {
+            border: 1px solid #0ff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            min-height: 100px;
+            white-space: pre-wrap;
+            color: #fff;
+            background: #001010;
+            line-height: 1.5;
+        }
+
+        .label {
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
- <header><h1>J.A.R.V.I.S</h1><p>MOBILE EDITION</p></header>
- <div class="core">
- <div class="ring r1"></div>
- <div class="ring r2"></div>
- <div class="center"></div>
- </div>
- <p class="core-text">CORE ACTIVE</p>
- <div class="status">
- <h2>SYSTEM STATUS</h2>
- <div class="row"><span>AI CORE</span><b class="on">● ONLINE</b></div>
- <div class="row"><span>NETWORK</span><b class="on">● ONLINE</b></div>
- <div class="row"><span>VOICE</span><b class="off">○ LOCKED</b></div>
- <div class="row"><span>MEMORY</span><b class="off">○ LOCKED</b></div>
- </div>
- <div class="chat" id="chat"></div>
- <div class="input-area">
- <input id="msg" placeholder="Ask J.A.R.V.I.S...">
- <button id="send">SEND</button>
- </div>
- <script src="script.js"></script>
+
+    <h1>J.A.R.V.I.S</h1>
+
+    <div id="status">BRAIN: NOT CONNECTED</div>
+
+    <div class="label">ENTER COMMAND</div>
+
+    <textarea id="prompt" rows="4">Hello J.A.R.V.I.S</textarea>
+
+    <button id="sendButton" onclick="ask()">SEND REQUEST</button>
+
+    <div class="label">J.A.R.V.I.S RESPONSE</div>
+
+    <div id="reply">Waiting for response...</div>
+
+    <script>
+        /*
+         * IMPORTANT:
+         * Do NOT put your Gemini/OpenRouter API key here.
+         *
+         * This frontend sends the request to your backend.
+         *
+         * Change this URL to your deployed backend URL.
+         */
+
+        const BACKEND_URL = "https://YOUR-BACKEND.onrender.com";
+
+        async function ask() {
+
+            const prompt = document.getElementById("prompt").value.trim();
+            const reply = document.getElementById("reply");
+            const status = document.getElementById("status");
+            const button = document.getElementById("sendButton");
+
+            if (!prompt) {
+                reply.innerText = "Please enter a message.";
+                return;
+            }
+
+            reply.innerText = "PROCESSING...";
+            status.innerText = "CONNECTING...";
+            status.style.color = "#0ff";
+            button.disabled = true;
+            button.innerText = "PROCESSING...";
+
+            try {
+
+                const res = await fetch(
+                    BACKEND_URL + "/chat",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            message: prompt
+                        })
+                    }
+                );
+
+                if (!res.ok) {
+                    throw new Error(
+                        "Backend returned HTTP " + res.status
+                    );
+                }
+
+                const data = await res.json();
+
+                console.log("Backend response:", data);
+
+                /*
+                 * Supports several common backend response formats.
+                 */
+
+                let responseText =
+                    data.reply ||
+                    data.response ||
+                    data.message ||
+                    data.text;
+
+                if (!responseText && data.candidates) {
+                    responseText =
+                        data.candidates[0]?.content?.parts?.[0]?.text;
+                }
+
+                if (responseText) {
+
+                    reply.innerText = responseText;
+
+                    status.innerText = "BRAIN ONLINE";
+                    status.style.color = "#0f0";
+
+                } else {
+
+                    reply.innerText =
+                        "ERROR: Backend returned an unexpected response.\n\n" +
+                        JSON.stringify(data, null, 2);
+
+                    status.innerText = "BRAIN ERROR";
+                    status.style.color = "#f00";
+                }
+
+            } catch (error) {
+
+                console.error("J.A.R.V.I.S Error:", error);
+
+                reply.innerText =
+                    "CONNECTION ERROR\n\n" +
+                    error.message +
+                    "\n\nCheck that your backend is online.";
+
+                status.innerText = "BRAIN OFFLINE";
+                status.style.color = "#f00";
+
+            } finally {
+
+                button.disabled = false;
+                button.innerText = "SEND REQUEST";
+            }
+        }
+
+
+        /*
+         * Press Ctrl + Enter to send.
+         */
+
+        document.getElementById("prompt").addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.ctrlKey && event.key === "Enter") {
+                    ask();
+                }
+
+            }
+        );
+    </script>
+
 </body>
 </html>
