@@ -3,113 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.A.R.V.I.S. Mobile Edition</title>
 
-    <title>J.A.R.V.I.S Brain Test</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #000;
-            color: #0ff;
-            font-family: monospace;
-            padding: 20px;
-            margin: 0;
-        }
-
-        h1 {
-            text-align: center;
-            letter-spacing: 4px;
-            margin-bottom: 10px;
-        }
-
-        #status {
-            color: #f00;
-            text-align: center;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        textarea {
-            width: 100%;
-            min-height: 120px;
-            resize: vertical;
-            background: #001a1a;
-            color: #0ff;
-            border: 1px solid #0ff;
-            border-radius: 8px;
-            padding: 10px;
-            font-family: monospace;
-            font-size: 16px;
-            outline: none;
-        }
-
-        textarea:focus {
-            box-shadow: 0 0 10px #0ff;
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            background: #0ff;
-            color: #000;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            margin-top: 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #fff;
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        #reply {
-            border: 1px solid #0ff;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 15px;
-            min-height: 100px;
-            white-space: pre-wrap;
-            color: #fff;
-            background: #001010;
-            line-height: 1.5;
-        }
-
-        .label {
-            margin-top: 15px;
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1>J.A.R.V.I.S</h1>
+    <div class="app">
 
-    <div id="status">BRAIN: NOT CONNECTED</div>
+        <!-- Header -->
+        <header>
+            <div class="brand">
+                <div class="logo">J</div>
+                <div>
+                    <h1>J.A.R.V.I.S.</h1>
+                    <p>MOBILE EDITION</p>
+                </div>
+            </div>
 
-    <div class="label">ENTER COMMAND</div>
+            <div class="status">
+                <span></span> ONLINE
+            </div>
+        </header>
 
-    <textarea id="prompt" rows="4">Hello J.A.R.V.I.S</textarea>
+        <!-- Arc Reactor -->
+        <section class="reactor-section">
+            <div class="reactor">
+                <div class="ring ring-1"></div>
+                <div class="ring ring-2"></div>
+                <div class="ring ring-3"></div>
+                <div class="core">
+                    <span>J</span>
+                </div>
+            </div>
 
-    <button id="sendButton" onclick="ask()">SEND REQUEST</button>
+            <h2>SYSTEMS ONLINE</h2>
+            <p>All J.A.R.V.I.S. systems are operational.</p>
+        </section>
 
-    <div class="label">J.A.R.V.I.S RESPONSE</div>
+        <!-- System Cards -->
+        <section class="systems">
 
-    <div id="reply">Waiting for response...</div>
+            <div class="system-card">
+                <span>⚡</span>
+                <div>
+                    <strong>CORE SYSTEM</strong>
+                    <small>Operational</small>
+                </div>
+            </div>
 
-    <script>
-        /*
+            <div class="system-card">
+                <span>🧠</span>
+                <div>
+                    <strong>AI ENGINE</strong>
+                    <small>Ready</small>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <span>🛡️</span>
+                <div>
+                    <strong>SECURITY</strong>
+                    <small>Protected</small>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Chat -->
+        <section class="chat-section">
+
+            <div class="section-title">
+                <span>J.A.R.V.I.S. CONSOLE</span>
+                <span class="live">● LIVE</span>
+            </div>
+
+            <div id="chat">
+                <div class="msg ai">
+                    J.A.R.V.I.S: Systems online. How may I assist you, Boss?
+                </div>
+            </div>
+
+            <div class="input-area">
+                <input
+                    id="msg"
+                    type="text"
+                    placeholder="Enter command..."
+                    autocomplete="off"
+                >
+
+                <button id="send">➤</button>
+            </div>
+
+        </section>
+
+        <footer>
+            J.A.R.V.I.S. MOBILE EDITION
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>        /*
          * IMPORTANT:
          * Do NOT put your Gemini/OpenRouter API key here.
          *
