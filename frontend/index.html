@@ -1,245 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J.A.R.V.I.S. Mobile Edition</title>
-
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J.A.R.V.I.S</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
-    <div class="app">
-
-        <!-- Header -->
-        <header>
-            <div class="brand">
-                <div class="logo">J</div>
-                <div>
-                    <h1>J.A.R.V.I.S.</h1>
-                    <p>MOBILE EDITION</p>
-                </div>
-            </div>
-
-            <div class="status">
-                <span></span> ONLINE
-            </div>
-        </header>
-
-        <!-- Arc Reactor -->
-        <section class="reactor-section">
-            <div class="reactor">
-                <div class="ring ring-1"></div>
-                <div class="ring ring-2"></div>
-                <div class="ring ring-3"></div>
-                <div class="core">
-                    <span>J</span>
-                </div>
-            </div>
-
-            <h2>SYSTEMS ONLINE</h2>
-            <p>All J.A.R.V.I.S. systems are operational.</p>
-        </section>
-
-        <!-- System Cards -->
-        <section class="systems">
-
-            <div class="system-card">
-                <span>⚡</span>
-                <div>
-                    <strong>CORE SYSTEM</strong>
-                    <small>Operational</small>
-                </div>
-            </div>
-
-            <div class="system-card">
-                <span>🧠</span>
-                <div>
-                    <strong>AI ENGINE</strong>
-                    <small>Ready</small>
-                </div>
-            </div>
-
-            <div class="system-card">
-                <span>🛡️</span>
-                <div>
-                    <strong>SECURITY</strong>
-                    <small>Protected</small>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- Chat -->
-        <section class="chat-section">
-
-            <div class="section-title">
-                <span>J.A.R.V.I.S. CONSOLE</span>
-                <span class="live">● LIVE</span>
-            </div>
-
-            <div id="chat">
-                <div class="msg ai">
-                    J.A.R.V.I.S: Systems online. How may I assist you, Boss?
-                </div>
-            </div>
-
-            <div class="input-area">
-                <input
-                    id="msg"
-                    type="text"
-                    placeholder="Enter command..."
-                    autocomplete="off"
-                >
-
-                <button id="send">➤</button> <button id="mic-btn">🎙</button>
-</div>
-
-29
-
-30
-
-31
-
-32
-
-</button> I
-            </div>
-
-        </section>
-
-        <footer>
-            J.A.R.V.I.S. MOBILE EDITION
-        </footer>
-
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>        /*
-         * IMPORTANT:
-         * Do NOT put your Gemini/OpenRouter API key here.
-         *
-         * This frontend sends the request to your backend.
-         *
-         * Change this URL to your deployed backend URL.
-         */
-
-        const BACKEND_URL = "https://YOUR-BACKEND.onrender.com";
-
-        async function ask() {
-
-            const prompt = document.getElementById("prompt").value.trim();
-            const reply = document.getElementById("reply");
-            const status = document.getElementById("status");
-            const button = document.getElementById("sendButton");
-
-            if (!prompt) {
-                reply.innerText = "Please enter a message.";
-                return;
-            }
-
-            reply.innerText = "PROCESSING...";
-            status.innerText = "CONNECTING...";
-            status.style.color = "#0ff";
-            button.disabled = true;
-            button.innerText = "PROCESSING...";
-
-            try {
-
-                const res = await fetch(
-                    BACKEND_URL + "/chat",
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-
-                        body: JSON.stringify({
-                            message: prompt
-                        })
-                    }
-                );
-
-                if (!res.ok) {
-                    throw new Error(
-                        "Backend returned HTTP " + res.status
-                    );
-                }
-
-                const data = await res.json();
-
-                console.log("Backend response:", data);
-
-                /*
-                 * Supports several common backend response formats.
-                 */
-
-                let responseText =
-                    data.reply ||
-                    data.response ||
-                    data.message ||
-                    data.text;
-
-                if (!responseText && data.candidates) {
-                    responseText =
-                        data.candidates[0]?.content?.parts?.[0]?.text;
-                }
-
-                if (responseText) {
-
-                    reply.innerText = responseText;
-
-                    status.innerText = "BRAIN ONLINE";
-                    status.style.color = "#0f0";
-
-                } else {
-
-                    reply.innerText =
-                        "ERROR: Backend returned an unexpected response.\n\n" +
-                        JSON.stringify(data, null, 2);
-
-                    status.innerText = "BRAIN ERROR";
-                    status.style.color = "#f00";
-                }
-
-            } catch (error) {
-
-                console.error("J.A.R.V.I.S Error:", error);
-
-                reply.innerText =
-                    "CONNECTION ERROR\n\n" +
-                    error.message +
-                    "\n\nCheck that your backend is online.";
-
-                status.innerText = "BRAIN OFFLINE";
-                status.style.color = "#f00";
-
-            } finally {
-
-                button.disabled = false;
-                button.innerText = "SEND REQUEST";
-            }
-        }
-
-
-        /*
-         * Press Ctrl + Enter to send.
-         */
-
-        document.getElementById("prompt").addEventListener(
-            "keydown",
-            function(event) {
-
-                if (event.ctrlKey && event.key === "Enter") {
-                    ask();
-                }
-
-            }
-        );
-    </script>
-
+ <header><h1>J.A.R.V.I.S</h1><p>MOBILE EDITION</p></header>
+ <div class="core">
+ <div class="ring r1"></div>
+ <div class="ring r2"></div>
+ <div class="center"></div>
+ </div>
+ <p class="core-text">CORE ACTIVE</p>
+ <div class="status">
+ <h2>SYSTEM STATUS</h2>
+ <div class="row"><span>AI CORE</span><b class="on">● ONLINE</b></div>
+ <div class="row"><span>NETWORK</span><b class="on">● ONLINE</b></div>
+ <div class="row"><span>VOICE</span><b class="off">○ LOCKED</b></div>
+ <div class="row"><span>MEMORY</span><b class="off">○ LOCKED</b></div>
+ </div>
+ <div class="chat" id="chat"></div>
+ <div class="input-area">
+ <input id="msg" placeholder="Ask J.A.R.V.I.S...">
+ <button id="send">SEND</button>
+ </div>
+ <script src="script.js"></script>
 </body>
 </html>
